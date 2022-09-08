@@ -1,10 +1,9 @@
 const tableCell = document.querySelectorAll(".table-cell");
-let firstPlayerTurn = true;
 
-let firstPlayerPoints = [""]
-let secondPlayerPoints = [""]
-let wincon = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]; 
-
+firstPlayerTurn = true;
+ firstPlayerPoints = [];
+ secondPlayerPoints = [];
+ wincon = [['0', '1', '2'], ['3', '4', '5'], ['6', '7', '8'], ['0', '3', '6'], ['1', '4', '7'], ['2', '5', '8'], ['0', '4', '8'], ['2', '4', '6']];
 
 const cell0 = document.getElementById("cell0");
 const cell1 = document.getElementById("cell1");
@@ -48,6 +47,7 @@ const saveButton = document.querySelector(".save-button")
 const player1Name = document.querySelector(".input-1");
 const player2Name = document.querySelector(".input-2");
 const nameDisplay = document.querySelector(".turn-display");
+const resetButton = document.querySelector(".reset-button")
 
 setInterval(function(){
     if(firstPlayerTurn == true){
@@ -70,14 +70,13 @@ function changeTurn() {
 cell0.addEventListener("click", function placeInCell0(){
     if (firstPlayerTurn == true){
     cross0.classList.remove("element-visibility")
-    firstPlayerPoints.push(0)
+    firstPlayerPoints.push('0')
     } else {
     circle0.classList.remove("element-visibility")    
-    secondPlayerPoints.push(0)
+    secondPlayerPoints.push('0')
     }
     changeTurn()
     console.log(firstPlayerPoints)
-    console.log(containment)
 },{
     once: true
 })
@@ -85,13 +84,12 @@ cell0.addEventListener("click", function placeInCell0(){
 cell1.addEventListener("click", function placeSymbol(){
     if (firstPlayerTurn == true){
     cross1.classList.remove("element-visibility")
-    firstPlayerPoints.push(1)
+    firstPlayerPoints.push('1')
     } else {
     circle1.classList.remove("element-visibility")    
-    secondPlayerPoints.push(1)
+    secondPlayerPoints.push('1')
     }
     changeTurn()
-    console.log(firstPlayerPoints);
 },{
     once: true
 })
@@ -99,13 +97,13 @@ cell1.addEventListener("click", function placeSymbol(){
 cell2.addEventListener("click", function(){
     if (firstPlayerTurn == true){
     cross2.classList.remove("element-visibility")
-    firstPlayerPoints.push(2)
+    firstPlayerPoints.push('2')
     } else {
     circle2.classList.remove("element-visibility") 
-    secondPlayerPoints.push(2)   
+    secondPlayerPoints.push('2')   
     }
     changeTurn()
-    console.log(firstPlayerPoints)
+    // console.log(firstPlayerPoints)
 },{
     once: true
 })
@@ -113,13 +111,13 @@ cell2.addEventListener("click", function(){
 cell3.addEventListener("click", function(){
     if (firstPlayerTurn == true){
     cross3.classList.remove("element-visibility")
-    firstPlayerPoints.push(3)
+    firstPlayerPoints.push('3')
     } else {
     circle3.classList.remove("element-visibility")
-    secondPlayerPoints.push(3)    
+    secondPlayerPoints.push('3')    
     }
     changeTurn()
-    console.log(firstPlayerPoints)
+    // console.log(firstPlayerPoints)
     console.log(wincon);
 },{
     once: true
@@ -128,11 +126,11 @@ cell3.addEventListener("click", function(){
 cell4.addEventListener("click", function(){
     if (firstPlayerTurn == true){
     cross4.classList.remove("element-visibility")
-    firstPlayerPoints.push(4)
-    console.log(firstPlayerPoints)
+    firstPlayerPoints.push('4')
+    // console.log(firstPlayerPoints)
     } else {
     circle4.classList.remove("element-visibility")
-    secondPlayerPoints.push(4)    
+    secondPlayerPoints.push('4')    
     }
     changeTurn()
 },{
@@ -142,11 +140,11 @@ cell4.addEventListener("click", function(){
 cell5.addEventListener("click", function(){
     if (firstPlayerTurn == true){
     cross5.classList.remove("element-visibility")
-    firstPlayerPoints.push(5)
-    console.log(firstPlayerPoints)
+    firstPlayerPoints.push('5')
+    // console.log(firstPlayerPoints)
     } else {
     circle5.classList.remove("element-visibility")
-    secondPlayerPoints.push(5)    
+    secondPlayerPoints.push('5')    
     }
     changeTurn()
 },{
@@ -156,11 +154,11 @@ cell5.addEventListener("click", function(){
 cell6.addEventListener("click", function(){
     if (firstPlayerTurn == true){
     cross6.classList.remove("element-visibility")
-    firstPlayerPoints.push(6)
-    console.log(firstPlayerPoints)
+    firstPlayerPoints.push('6')
+    // console.log(firstPlayerPoints)
     } else {
     circle6.classList.remove("element-visibility")
-    secondPlayerPoints.push(6)    
+    secondPlayerPoints.push('6')    
     }
     changeTurn()
 },{
@@ -170,11 +168,11 @@ cell6.addEventListener("click", function(){
 cell7.addEventListener("click", function(){
     if (firstPlayerTurn == true){
     cross7.classList.remove("element-visibility")
-    firstPlayerPoints.push(7)
-    console.log(firstPlayerPoints)
+    firstPlayerPoints.push('7')
+    // console.log(firstPlayerPoints)
     } else {
     circle7.classList.remove("element-visibility")
-    secondPlayerPoints.push(7)    
+    secondPlayerPoints.push('7')    
     }
     changeTurn()
 },{
@@ -184,11 +182,11 @@ cell7.addEventListener("click", function(){
 cell8.addEventListener("click", function(){
     if (firstPlayerTurn == true){
     cross8.classList.remove("element-visibility")
-    firstPlayerPoints.push(8)
-    console.log(firstPlayerPoints)
+    firstPlayerPoints.push('8')
+    // console.log(firstPlayerPoints)
     } else {
     circle8.classList.remove("element-visibility")
-    secondPlayerPoints.push(8)
+    secondPlayerPoints.push('8')
     console.log(secondPlayerPoints);    
     }
     changeTurn()
@@ -197,15 +195,55 @@ cell8.addEventListener("click", function(){
     once: true
 })
 
-const containment = wincon.some(element => {
-    return firstPlayerPoints.indexOf(element) !== -1;
-})
+wincon.forEach(conditions =>{
+    const player1win = conditions.every(con => firstPlayerPoints.includes(con)) 
+    const player2win = conditions.every(con => secondPlayerPoints.includes(con)) 
+    if (player1win) {
+        alert(`${player1Name.value}`,"Wins!");
+        let leaderboardPlayer = document.createElement('li');
+        leaderboardPlayer.appendChild(document.createTextNode(`${player1Name.value}`))
+        document.querySelector('ul').appendChild(leaderboardPlayer)
+        localStorage.setItem("leaderboard", JSON.stringify(leaderboard.textContent));
+        console.log(localStorage)
+        JSON.parse(localStorage.getItem("leaderboard"))
+    } else if (player2win) {
+        alert(`${player2Name.value}`,"Wins!")
+        let leaderboardPlayer = document.createElement('li');
+        leaderboardPlayer.appendChild(document.createTextNode(`${player2Name.value}`))
+        document.querySelector('ul').appendChild(leaderboardPlayer)
+        localStorage.setItem("leaderboard", JSON.stringify(leaderboard.textContent));
+        console.log(localStorage)
+        JSON.parse(localStorage.getItem("leaderboard"))
+    } else if (firstPlayerPoints.length + secondPlayerPoints.length == 9){
+        alert("It's a draw! Good game!")
+    }
+}) 
+
+// const containment = wincon.some(element => {
+//     return firstPlayerPoints.indexOf(element) !== -1;
+// })
+
+// setInterval(function() {
+//     if (wincon.includes(firstPlayerPoints.sort())){
+//         alert("Player 1 wins!")
+//     }
+// })
+
+// setInterval(checkWin())
+
+// function winCheck() {
+//     let victory = false
+//     for (let i = 0; i <= 7; i++){
+//         const condition = wincon[i];
+        
+//     }
+// }
 
 player1button.addEventListener("click", function(){
     let leaderboardPlayer = document.createElement('li');
     leaderboardPlayer.appendChild(document.createTextNode(`${player1Name.value}`))
     document.querySelector('ul').appendChild(leaderboardPlayer)
-    
+    console.log(wincon.includes(firstPlayerPoints.sort()))
 })
 
 player2button.addEventListener("click", function(){
