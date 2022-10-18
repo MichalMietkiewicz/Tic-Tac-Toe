@@ -1,243 +1,181 @@
-const tableCell = document.querySelectorAll(".table-cell");
-const tableBody = document.querySelector("table-body")
+const tableCell = document.getElementsByClassName("table-cell");
+const tableCells = document.querySelectorAll(".table-cell");
+
 firstPlayerTurn = true;
- firstPlayerPoints = [];
- secondPlayerPoints = [];
- wincon = [['0', '1', '2'], ['3', '4', '5'], ['6', '7', '8'], ['0', '3', '6'], ['1', '4', '7'], ['2', '5', '8'], ['0', '4', '8'], ['2', '4', '6']];
+firstPlayerPoints = [];
+secondPlayerPoints = [];
+let firstPlayerRoundWins = 0;
+let secondPlayerRoundWins = 0;
 
-const cell0 = document.getElementById("cell0");
-const cell1 = document.getElementById("cell1");
-const cell2 = document.getElementById("cell2");
-const cell3 = document.getElementById("cell3");
-const cell4 = document.getElementById("cell4");
-const cell5 = document.getElementById("cell5");
-const cell6 = document.getElementById("cell6");
-const cell7 = document.getElementById("cell7");
-const cell8 = document.getElementById("cell8");
+wincon = [['0', '1', '2'], ['3', '4', '5'], ['6', '7', '8'], ['0', '3', '6'], ['1', '4', '7'], ['2', '5', '8'], ['0', '4', '8'], ['2', '4', '6']];
 
-
-const crosses = document.querySelectorAll(".cross")
-const circles = document.querySelectorAll(".circle")
-
-const circle0 = document.getElementById("circle0");
-const circle1 = document.getElementById("circle1");
-const circle2 = document.getElementById("circle2");
-const circle3 = document.getElementById("circle3");
-const circle4 = document.getElementById("circle4");
-const circle5 = document.getElementById("circle5");
-const circle6 = document.getElementById("circle6");
-const circle7 = document.getElementById("circle7");
-const circle8 = document.getElementById("circle8");
-
-const cross0 = document.getElementById("cross0");
-const cross1 = document.getElementById("cross1");
-const cross2 = document.getElementById("cross2");
-const cross3 = document.getElementById("cross3");
-const cross4 = document.getElementById("cross4");
-const cross5 = document.getElementById("cross5");
-const cross6 = document.getElementById("cross6");
-const cross7 = document.getElementById("cross7");
-const cross8 = document.getElementById("cross8")
-
-const leaderboard = document.querySelector(".leaderboard")
-const player1button = document.querySelector(".test-button-1")
-const player2button = document.querySelector(".test-button-2")
-const saveButton = document.querySelector(".save-button")
-
-const player1Name = document.querySelector(".input-1");
-const player2Name = document.querySelector(".input-2");
+const gameStartElements = document.querySelector(".page-elements")
+const crosses = document.getElementsByClassName("cross");
+const circles = document.getElementsByClassName("circle");
+const startBtn = document.getElementById("start-button")
+const leaderboard = document.querySelector(".leaderboard");
+const inputBox = document.querySelector(".input-box");
+let player1Input = document.querySelector(".input-1");
+let player2Input = document.querySelector(".input-2");
 const nameDisplay = document.querySelector(".turn-display");
-const resetButton = document.querySelector(".reset-button")
+const resetButton = document.getElementById("reset-button");
+const leaderTitle = document.querySelector(".bottom-content");
+const player1Score = document.getElementById("player1score");
+const player2Score = document.getElementById("player2score");
+const nextMatch = document.getElementById("play-again");
+const gridBox = document.getElementById("grid-box");
+let player1Title;
+let player2Title;
+let currentPlayer;
+let roundWinner; 
+let matchWinner;
 
-setInterval(function(){
-    if(firstPlayerTurn == true){
-    nameDisplay.innerHTML = `It's ${player1Name.value} 's turn`
-    if(player1Name.value === "") {
-        nameDisplay.innerHTML = `It's player 1's turn`
-    }} else {
-        nameDisplay.innerHTML = `It's ${player2Name.value} 's turn`
-        if(player2Name.value === "") {
-            nameDisplay.innerHTML = `It's player 2's turn`
-        }
-    } 
-},
-);
-
-function changeTurn() {
-    firstPlayerTurn = !firstPlayerTurn
+const generateCells = () => {
+    for (let i = 0; i < 9; i++){
+        const createCell = document.createElement("div");
+        gridBox.appendChild(createCell);
+        createCell.className = "table-cell"
+        createCell.id = `cell${i}`;
+    }
 }
 
-cell0.addEventListener("click", function placeInCell0(){
-    if (firstPlayerTurn == true){
-    cross0.classList.remove("element-visibility")
-    firstPlayerPoints.push('0')
-    } else {
-    circle0.classList.remove("element-visibility")    
-    secondPlayerPoints.push('0')
-    }
-    changeTurn()
-    winChecker()
-},{
-    once: true
-})
+resetButton.addEventListener("click", () => {
+    resetFunctionality()
+});
 
-cell1.addEventListener("click", function placeSymbol(){
-    if (firstPlayerTurn == true){
-    cross1.classList.remove("element-visibility")
-    firstPlayerPoints.push('1')
-    } else {
-    circle1.classList.remove("element-visibility")    
-    secondPlayerPoints.push('1')
+const startButtonEnabler = () => {
+    if(player1Input.value == "" || player2Input.value == "") {
+        startBtn.disabled = true;
+    } else if(player1Input.value == player2Input.value) {
+        startBtn.disabled = true;
+        alert("THE NAMES CANT BE THE SAME")
     }
-    changeTurn()
-    winChecker()
-},{
-    once: true
-})
+     else {
+        startBtn.disabled = false;
+        startBtn.addEventListener("click", () => {
+            player1Title = player1Input.value;
+            player2Title = player2Input.value;    
+            gameStartElements.classList.remove("hidden");
+            inputBox.classList.add("hidden");
+            upadateScoreboard()
+    })
+}} 
 
-cell2.addEventListener("click", function(){
-    if (firstPlayerTurn == true){
-    cross2.classList.remove("element-visibility")
-    firstPlayerPoints.push('2')
-    } else {
-    circle2.classList.remove("element-visibility") 
-    secondPlayerPoints.push('2')   
-    }
-    changeTurn()
-    winChecker()
-},{
-    once: true
-})
+const enableGameBoard = () => {
+    generateCells();
+    Array.from(tableCell).forEach(Cell => Cell.addEventListener("click", event => {
+        !event.target.hasChildNodes() && appendSymbol(firstPlayerTurn ? "cross" : "circle", event); 
+    }));
+}
 
-cell3.addEventListener("click", function(){
-    if (firstPlayerTurn == true){
-    cross3.classList.remove("element-visibility")
-    firstPlayerPoints.push('3')
-    } else {
-    circle3.classList.remove("element-visibility")
-    secondPlayerPoints.push('3')    
-    }
-    changeTurn()
-    winChecker()
-},{
-    once: true
-})
+startBtn.addEventListener("click", () => {
+    startButtonEnabler();
+    enableGameBoard();
+});
 
-cell4.addEventListener("click", function(){
-    if (firstPlayerTurn == true){
-    cross4.classList.remove("element-visibility")
-    firstPlayerPoints.push('4')
-    } else {
-    circle4.classList.remove("element-visibility")
-    secondPlayerPoints.push('4')    
-    }
-    changeTurn()
-    winChecker()
-},{
-    once: true
-})
+inputBox.addEventListener("input", () => {
+    startButtonEnabler()
+});
 
-cell5.addEventListener("click", function(){
-    if (firstPlayerTurn == true){
-    cross5.classList.remove("element-visibility")
-    firstPlayerPoints.push('5')
-    } else {
-    circle5.classList.remove("element-visibility")
-    secondPlayerPoints.push('5')    
-    }
-    changeTurn()
-    winChecker()
-},{
-    once: true
-})
+const changeTurn = () => {
+    firstPlayerTurn = !firstPlayerTurn;
+    swapPlayers();
+};
 
-cell6.addEventListener("click", function(){
-    if (firstPlayerTurn == true){
-    cross6.classList.remove("element-visibility")
-    firstPlayerPoints.push('6')
-    } else {
-    circle6.classList.remove("element-visibility")
-    secondPlayerPoints.push('6')    
-    }
-    changeTurn()
-    winChecker()
-},{
-    once: true
-})
+let swapPlayers = () => {
+    firstPlayerTurn ? currentPlayer = player1Input.value : currentPlayer = player2Input.value;
+    nameDisplay.textContent = `It's ${currentPlayer}'s turn!`
+}; 
 
-cell7.addEventListener("click", function(){
-    if (firstPlayerTurn == true){
-    cross7.classList.remove("element-visibility")
-    firstPlayerPoints.push('7')
+const appendSymbol = (icon, event) => {
+    let symbol = document.createElement("i");
+    symbol.classList.add(icon, "fa-solid", "fa-2xl");
+    if (firstPlayerTurn) {
+        symbol.classList.add("fa-xmark");
+        firstPlayerPoints.push(event.target.id.substring(4))
     } else {
-    circle7.classList.remove("element-visibility")
-    secondPlayerPoints.push('7')    
+        symbol.classList.add("fa-o");
+        secondPlayerPoints.push(event.target.id.substring(4))
     }
+    event.target.appendChild(symbol);
     changeTurn()
+    roundWinChecker()
     winChecker()
-},{
-    once: true
-})
+    
+};
 
-cell8.addEventListener("click", function(){
-    if (firstPlayerTurn == true){
-    cross8.classList.remove("element-visibility")
-    firstPlayerPoints.push('8')
-    } else {
-    circle8.classList.remove("element-visibility")
-    secondPlayerPoints.push('8') 
-    }
+const resetFunctionality = () => {
     changeTurn()
-    winChecker()
-},{
-    once: true
-})
+    firstPlayerPoints = [];
+    secondPlayerPoints = [];
+    gridBox.innerHTML = "";
+    roundWinner = "";
+    enableGameBoard();
+    document.querySelector("#game-board").style.pointerEvents = "all";
+};
+
+const upadateScoreboard = () =>  {
+    player1Score.textContent = `${player1Title}'s round wins : ${firstPlayerRoundWins}`;
+    player2Score.textContent = `${player2Title}'s round wins : ${secondPlayerRoundWins}`; 
+};
 
 const winChecker = () => {
+if (firstPlayerRoundWins == 3) {
+    matchWinner = player1Input.value
+} else if (secondPlayerRoundWins == 3) {
+    matchWinner = player2Input.value
+} if (secondPlayerRoundWins == 3 || firstPlayerRoundWins == 3) {
+    resetButton.classList.add("hidden");
+    nextMatch.classList.remove("hidden");
+        nextMatch.addEventListener("click", () => {
+            resetFunctionality()
+            firstPlayerRoundWins = 0;
+            secondPlayerRoundWins = 0;
+            player1Input.textContent = "";
+            player2Input.textContent = "";
+            clearScreen()
+            gridBox.innerHTML = "";
+            nameDisplay.innerHTML = "Its first player's turn"
+})
+        alert(`${matchWinner} WINS THE GAME CONGRATULATIONS! 😊`);
+        localStorage.setItem("leaderboard", JSON.stringify(leaderboard.textContent));
+        let leaderboardPlayer = document.createElement('li');
+        leaderboardPlayer.appendChild(document.createTextNode(`${matchWinner}`));
+        document.querySelector('ul').appendChild(leaderboardPlayer);
+}};
+
+const roundWinChecker = () => {
     wincon.forEach(condition => {
         player1win = condition.every(con => firstPlayerPoints.includes(con))
         player2win = condition.every(con => secondPlayerPoints.includes(con))
             if (player1win) {
-        document.querySelector(".table-body").style.pointerEvents = "none";
-        let leaderboardPlayer = document.createElement('li');
-        leaderboardPlayer.appendChild(document.createTextNode(`${player1Name.value}`))
-        document.querySelector('ul').appendChild(leaderboardPlayer)
-        localStorage.setItem("leaderboard", JSON.stringify(leaderboard.textContent));
-        JSON.parse(localStorage.getItem("leaderboard"))
-            alert(`${player1Name.value} Wins!`);
-        } else if (player2win){
-        document.querySelector(".table-body").style.pointerEvents = "none";
-        let leaderboardPlayer = document.createElement('li');
-        leaderboardPlayer.appendChild(document.createTextNode(`${player2Name.value}`))
-        document.querySelector('ul').appendChild(leaderboardPlayer)
-        localStorage.setItem("leaderboard", JSON.stringify(leaderboard.textContent));
-        JSON.parse(localStorage.getItem("leaderboard"))
-            alert(`${player2Name.value} Wins!`);
+                roundWinner = player1Title;
+                firstPlayerRoundWins = firstPlayerRoundWins + 1;
+            } else if (player2win) {
+                roundWinner = player2Title;
+                secondPlayerRoundWins = secondPlayerRoundWins + 1;
+            }
+            if (player1win || player2win) {
+                upadateScoreboard()
+                document.querySelector("#game-board").style.pointerEvents = "none";
+                alert(`${roundWinner} Wins the round!`);
         } else if (player1win == false && player2win == false && firstPlayerPoints.length + secondPlayerPoints.length == 9){
-        alert("It's a draw! Good game!")
-        }   
-    })
+        alert(`It's a draw! Good game!`), {
+            once: true
+        }
+        };
+    });
     
-}
+};
 
-player1button.addEventListener("click", function(){
-    let leaderboardPlayer = document.createElement('li');
-    leaderboardPlayer.appendChild(document.createTextNode(`${player1Name.value}`))
-    document.querySelector('ul').appendChild(leaderboardPlayer)
-})
+document.addEventListener("DOMContentLoaded", () => {
+    localStorage.clear()
+    leaderboard.innerHTML = localStorage.getItem("leaderboard") + "," 
+    alert("PLEASE ENTER THE PLAYER'S NAMES");
+});
 
-player2button.addEventListener("click", function(){
-    let leaderboardPlayer = document.createElement('li');
-    leaderboardPlayer.appendChild(document.createTextNode(`${player2Name.value}`))
-    document.querySelector('ul').appendChild(leaderboardPlayer)
-})
-
-saveButton.addEventListener("click", function(){
-    localStorage.setItem("leaderboard", JSON.stringify(leaderboard.textContent));
-    JSON.parse(localStorage.getItem("leaderboard"))
-})
-
-document.addEventListener("DOMContentLoaded", function(){
-    leaderboard.innerHTML = JSON.parse(localStorage.getItem("leaderboard")) + ", "
-})
+function clearScreen() {
+    gameStartElements.classList.add("hidden");
+    inputBox.classList.remove("hidden");
+};
 

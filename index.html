@@ -12,65 +12,42 @@
     <h1>
         TIC-TAC-TOE!
     </h1>
+    
     <div class="input-box">
         <input class="input-1" type="text" placeholder="enter player 1 name">
         <input class="input-2" type="text" placeholder="enter player 2 name">
-        <p class="turn-display">
-            It's player's turn! 
-        </p>
+        <button id="start-button">
+            Start the game!
+        </button>
     </div>
-    <table class="table-body">
-        <tr>
-            <td class="table-cell left-cell upper-cell fa-stack" id="cell0">
-                <i id="cross0" class="fa-solid fa-xmark fa-2xl cross element-visibility"></i>
-                <i id="circle0" class="fa-solid fa-o fa-2xl circle element-visibility"></i>
-            </td>
-            <td class="table-cell middle-cell upper-cell fa-stack" id="cell1">
-                <i id="cross1" class="fa-solid fa-xmark fa-2xl cross element-visibility"></i>
-                <i id="circle1" class="fa-solid fa-o fa-2xl circle element-visibility"></i>
-            </td>
-            <td class="table-cell right-cell upper-cell fa-stack" id="cell2">
-                <i id="cross2" class="fa-solid fa-xmark fa-2xl cross element-visibility"></i>
-                <i id="circle2" class="fa-solid fa-o fa-2xl circle element-visibility"></i>
-            </td>
-        </tr>
-        <tr>
-            <td class="table-cell left-cell fa-stack" id="cell3">
-                <i id="cross3" class="fa-solid fa-xmark fa-2xl cross element-visibility"></i>
-                <i id="circle3" class="fa-solid fa-o fa-2xl circle element-visibility"></i>
-            </td>
-            <td class="table-cell middle-cell fa-stack" id="cell4">
-                <i id="cross4" class="fa-solid fa-xmark fa-2xl cross element-visibility"></i>
-                <i id="circle4" class="fa-solid fa-o fa-2xl circle element-visibility"></i>
-            </td>
-            <td class="table-cell right-cell fa-stack" id="cell5">
-                <i id="cross5" class="fa-solid fa-xmark fa-2xl cross element-visibility"></i>
-                <i id="circle5" class="fa-solid fa-o fa-2xl circle element-visibility"></i>
-            </td>
-        </tr>
-        <tr>
-            <td class="table-cell left-cell fa-stack" id="cell6">
-                <i id="cross6" class="fa-solid fa-xmark fa-2xl cross element-visibility"></i>
-                <i id="circle6" class="fa-solid fa-o fa-2xl circle element-visibility"></i>
-            </td>
-            <td class="table-cell middle-cell fa-stack" id="cell7">
-                <i id="cross7" class="fa-solid fa-xmark fa-2xl cross element-visibility"></i>
-                <i id="circle7" class="fa-solid fa-o fa-2xl circle element-visibility"></i>
-            </td>
-            <td class="table-cell right-cell fa-stack" id="cell8">
-                <i id="cross8" class="fa-solid fa-xmark fa-2xl cross element-visibility"></i>
-                <i id="circle8" class="fa-solid fa-o fa-2xl circle element-visibility"></i>
-            </td>
-        </tr>
-    </table>
+    <div class="page-elements hidden">
+        <div class="score-box">
+            <p class="score-text" id="player1score"></p>
+            <p class="score-text" id="player2score"></p>
+        </div>
+        <p class="turn-display">
+            It's first players turn!
+        </p>
+    <div id="game-board">
+        <span class="vertical-line upper-line"></span>
+        <span class="vertical-line lower-line"></span>
+        <span class="horizontal-line left-line"></span> 
+        <span class="horizontal-line right-line"></span>
+        <div id="grid-box"></div>
+    </div>
     <div class="bottom-content">
+    <button id="reset-button">
+        Next Round!
+    </button>
+    <br>
+    <button id="play-again" class="hidden">
+        Play again!
+    </button>
     <h3>Leaderboard</h3>
-    <button class="test-button-1">test: put player 1 in leaderboard</button>
-    <button class="test-button-2">test: put player 2 in leaderboard</button>
     <ul class="leaderboard">   
     </ul>
     </div>
-    <button class="save-button">save leaderboard to local storage</button>
+    </div>
     <script src="app.js"></script>
 </body>
 </html>
