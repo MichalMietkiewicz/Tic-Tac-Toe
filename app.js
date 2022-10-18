@@ -169,7 +169,6 @@ const roundWinChecker = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    localStorage.clear()
     leaderboard.innerHTML = localStorage.getItem("leaderboard") + "," 
     alert("PLEASE ENTER THE PLAYER'S NAMES");
 });
