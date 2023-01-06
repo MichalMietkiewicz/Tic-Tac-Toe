@@ -121,9 +121,18 @@ table{
 }
 
 .upper-line {
-    top: 390px;
+    top: 480px;
 }
 
 .lower-line {
-    top: 510px;
+    top: 600px;
+}
+
+#name-warn {
+    color: red;
+    margin: 0;
+}
+
+#current-round {
+    margin: 0;
 }

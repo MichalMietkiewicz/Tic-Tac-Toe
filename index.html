@@ -12,15 +12,22 @@
     <h1>
         TIC-TAC-TOE!
     </h1>
-    
     <div class="input-box">
-        <input class="input-1" type="text" placeholder="enter player 1 name">
-        <input class="input-2" type="text" placeholder="enter player 2 name">
+        <p>
+            Please enter the player's names!
+        </p>
+        <p id="name-warn" class="hidden">
+            THE NAMES CAN'T BE THE SAME
+        </p>
+        <input class="input-1" type="text" placeholder="enter first players name"/>
+        <input class="input-2" type="text" placeholder="enter second players name"/>
         <button id="start-button">
             Start the game!
         </button>
     </div>
     <div class="page-elements hidden">
+        <p class="score-text" id="current-round">
+        </p>
         <div class="score-box">
             <p class="score-text" id="player1score"></p>
             <p class="score-text" id="player2score"></p>
@@ -28,26 +35,27 @@
         <p class="turn-display">
             It's first players turn!
         </p>
-    <div id="game-board">
-        <span class="vertical-line upper-line"></span>
-        <span class="vertical-line lower-line"></span>
-        <span class="horizontal-line left-line"></span> 
-        <span class="horizontal-line right-line"></span>
-        <div id="grid-box"></div>
-    </div>
-    <div class="bottom-content">
-    <button id="reset-button">
-        Next Round!
-    </button>
-    <br>
-    <button id="play-again" class="hidden">
-        Play again!
-    </button>
-    <h3>Leaderboard</h3>
-    <ul class="leaderboard">   
-    </ul>
-    </div>
+        <div id="game-board">
+            <span class="vertical-line upper-line"></span>
+            <span class="vertical-line lower-line"></span>
+            <span class="horizontal-line left-line"></span> 
+            <span class="horizontal-line right-line"></span>
+            <div id="grid-box"></div>
+        </div>
+        <div class="bottom-content">
+            <button id="reset-button">
+                Reset the Round!
+            </button>
+            <button id="play-again" class="hidden">
+                Play again!
+            </button>
+            <br>
+            <h3>Leaderboard</h3>
+            <button id="clear-board">clear the leaderboard</button>
+            <ul class="leaderboard">   
+            </ul>
+        </div>
     </div>
     <script src="app.js"></script>
 </body>
-</html>
+</html> 
