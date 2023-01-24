@@ -33,11 +33,6 @@ let roundWinner;
 let matchWinner;
 let numOfCells;
 
-leaderboardClear.addEventListener("click", () => {
-    console.log("a");
-    localStorage.clear();
-});
-
 const swapPlayers = () => {
     firstPlayerTurn ? currentPlayer = player1Input.value : currentPlayer = player2Input.value;
     nameDisplay.textContent = `It's ${currentPlayer}'s turn!`
@@ -54,22 +49,27 @@ const generateCells = () => {
 
 const handleDraws = () => {
     if(firstPlayerPoints.length + secondPlayerPoints.length == 9){
+
         if(firstPlayerRoundWins > 0 || secondPlayerRoundWins > 0){
             alert("It's a draw, nice try!")
             document.querySelector("#game-board").style.pointerEvents = "none";
         };
+
     };
 };
 
 const handleReset = () => {
-    handleTurnChange();
+    
     firstPlayerPoints = [];
     secondPlayerPoints = [];
     gridBox.innerHTML = "";
     roundWinner = "";
+
+    handleTurnChange();
     enableGameBoard();
+
     document.querySelector("#game-board").style.pointerEvents = "all";
-};
+}
 
 const clearScreen = () => {
     gameStartElements.classList.add("hidden");
@@ -77,6 +77,7 @@ const clearScreen = () => {
 };
 
 const startButtonEnabler = () => {
+
     if(player1Input.value == "" || player2Input.value == "") {
         startBtn.disabled = true;
     } else if(player1Input.value == player2Input.value) {
@@ -84,26 +85,27 @@ const startButtonEnabler = () => {
         nameWarn.classList.remove("hidden");
     }
      else {
+        nameWarn.classList.add("hidden");
         startBtn.disabled = false;
         startBtn.addEventListener("click", () => {
+
             player1Name = player1Input.value;
             player2Name = player2Input.value;    
+
             gameStartElements.classList.remove("hidden");
             inputBox.classList.add("hidden");
             handleScoreboardUpdate();
+
     });
 }}; 
 
 const enableGameBoard = () => {
     generateCells();
+
     Array.from(tableCell).forEach(Cell => Cell.addEventListener("click", event => {
         !event.target.hasChildNodes() && appendSymbol(firstPlayerTurn ? "cross" : "circle", event); 
     }));
 };
-
-document.addEventListener("click", () => {
-    console.log(firstPlayerPoints.length + secondPlayerPoints.length);
-});
 
 resetButton.addEventListener("click", () => {
     handleReset();
@@ -124,11 +126,10 @@ const handleTurnChange = () => {
     swapPlayers();
 };
 
-
-
 const appendSymbol = (icon, event) => {
     let symbol = document.createElement("i");
     symbol.classList.add(icon, "fa-solid", "fa-2xl");
+
     if (firstPlayerTurn) {
         symbol.classList.add("fa-xmark");
         firstPlayerPoints.push(event.target.id.substring(4));
@@ -136,11 +137,14 @@ const appendSymbol = (icon, event) => {
         symbol.classList.add("fa-o");
         secondPlayerPoints.push(event.target.id.substring(4));
     }
+    
     event.target.appendChild(symbol);
+    symbol.style.pointerEvents = "none";
+
     handleTurnChange();
-    roundWinChecker();
     winChecker();
     handleDraws();
+    roundWinChecker();
 };
 
 
@@ -152,31 +156,39 @@ const handleScoreboardUpdate = () =>  {
 };
 
 const winChecker = () => {
+
     if (firstPlayerRoundWins == 3) {
         matchWinner = player1Input.value
     }
     else if (secondPlayerRoundWins == 3) {
         matchWinner = player2Input.value
     }
+
     if (secondPlayerRoundWins == 3 || firstPlayerRoundWins == 3) {
+        document.querySelector("#game-board").style.pointerEvents = "none";
         resetButton.classList.add("hidden");
         nextMatch.classList.remove("hidden");
+
             nextMatch.addEventListener("click", () => {
                 handleReset();
                 firstPlayerRoundWins = 0;
                 secondPlayerRoundWins = 0;
+
                 roundCount = 0;
+
                 player1Input.textContent = "";
                 player2Input.textContent = "";
                 clearScreen();
+
                 gridBox.innerHTML = "";
                 nameDisplay.innerHTML = `Its first player's turn`;
                 resetButton.classList.remove("hidden");
                 nextMatch.classList.add("hidden");
     });
-            alert(`${matchWinner} WINS THE GAME CONGRATULATIONS! 😊`);
-        localStorage.setItem("leaderboard", JSON.stringify(leaderboard.textContent));
+        
+        alert(`${matchWinner} WINS THE GAME CONGRATULATIONS! 😊`);
 
+        localStorage.setItem("leaderboard", JSON.stringify(leaderboard.textContent));
         let leaderboardPlayer = document.createElement('li');
         leaderboardPlayer.appendChild(document.createTextNode(`${matchWinner}`));
         document.querySelector('ul').appendChild(leaderboardPlayer);
@@ -186,6 +198,7 @@ const roundWinChecker = () => {
     wincon.forEach(condition => {
         player1win = condition.every(con => firstPlayerPoints.includes(con))
         player2win = condition.every(con => secondPlayerPoints.includes(con))
+
             if (player1win) {
                 roundWinner = player1Name;
                 firstPlayerRoundWins = firstPlayerRoundWins + 1;
@@ -194,17 +207,16 @@ const roundWinChecker = () => {
                 roundWinner = player2Name;
                 secondPlayerRoundWins = secondPlayerRoundWins + 1;
             }
+
             if (player1win || player2win) {
+                document.querySelector("#game-board").style.pointerEvents = "none";
                 roundCount = roundCount + 1;
+                
                 handleScoreboardUpdate();
                 alert(`${roundWinner} Wins the round!`);
-                handleReset();
+                setTimeout(handleReset, 1500);
+                winChecker();
         };
     });
 };
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    leaderboard.innerHTML = localStorage.getItem("leaderboard") + "," 
-});
 
