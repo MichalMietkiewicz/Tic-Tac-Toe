@@ -34,8 +34,8 @@ let matchWinner;
 let numOfCells;
 
 const swapPlayers = () => {
-    firstPlayerTurn ? currentPlayer = player1Input.value : currentPlayer = player2Input.value;
-    nameDisplay.textContent = `It's ${currentPlayer}'s turn!`
+    currentPlayer = firstPlayerTurn ? player1Input.value : player2Input.value;
+    nameDisplay.textContent = `It's ${currentPlayer}'s turn!`;
 }; 
 
 const generateCells = () => {
@@ -48,10 +48,10 @@ const generateCells = () => {
 };
 
 const handleDraws = () => {
-    if(firstPlayerPoints.length + secondPlayerPoints.length == 9){
+    if (firstPlayerPoints.length + secondPlayerPoints.length == 9)  {
 
-        if(firstPlayerRoundWins > 0 || secondPlayerRoundWins > 0){
-            alert("It's a draw, nice try!")
+        if (firstPlayerRoundWins > 0 || secondPlayerRoundWins > 0)  {
+            alert("It's a draw, nice try!");
             document.querySelector("#game-board").style.pointerEvents = "none";
         };
 
@@ -78,13 +78,15 @@ const clearScreen = () => {
 
 const startButtonEnabler = () => {
 
-    if(player1Input.value == "" || player2Input.value == "") {
+    if (player1Input.value == "" || player2Input.value == "") {
         startBtn.disabled = true;
-    } else if(player1Input.value == player2Input.value) {
+    }
+    else if (player1Input.value == player2Input.value) {
         startBtn.disabled = true;
         nameWarn.classList.remove("hidden");
     }
-     else {
+
+    else {
         nameWarn.classList.add("hidden");
         startBtn.disabled = false;
         startBtn.addEventListener("click", () => {
@@ -133,10 +135,11 @@ const appendSymbol = (icon, event) => {
     if (firstPlayerTurn) {
         symbol.classList.add("fa-xmark");
         firstPlayerPoints.push(event.target.id.substring(4));
-    } else {
+    }
+    else {
         symbol.classList.add("fa-o");
         secondPlayerPoints.push(event.target.id.substring(4));
-    }
+    };
     
     event.target.appendChild(symbol);
     symbol.style.pointerEvents = "none";
@@ -150,6 +153,12 @@ const appendSymbol = (icon, event) => {
 
 
 const handleScoreboardUpdate = () =>  {
+
+    if (roundWinner !== undefined || "") {
+        alert(`${roundWinner} Wins the round!`);
+        document.querySelector("#game-board").style.pointerEvents = "none";
+    };
+
     player1Score.textContent = `${player1Name}'s round wins : ${firstPlayerRoundWins}`;
     player2Score.textContent = `${player2Name}'s round wins : ${secondPlayerRoundWins}`; 
     currentRound.textContent = `It's currently round ${roundCount}, win 3 rounds to win the match!`;
@@ -162,7 +171,7 @@ const winChecker = () => {
     }
     else if (secondPlayerRoundWins == 3) {
         matchWinner = player2Input.value
-    }
+    };
 
     if (secondPlayerRoundWins == 3 || firstPlayerRoundWins == 3) {
         document.querySelector("#game-board").style.pointerEvents = "none";
@@ -196,8 +205,8 @@ const winChecker = () => {
 
 const roundWinChecker = () => {
     wincon.forEach(condition => {
-        player1win = condition.every(con => firstPlayerPoints.includes(con))
-        player2win = condition.every(con => secondPlayerPoints.includes(con))
+        player1win = condition.every(con => firstPlayerPoints.includes(con));
+        player2win = condition.every(con => secondPlayerPoints.includes(con));
 
             if (player1win) {
                 roundWinner = player1Name;
@@ -212,10 +221,9 @@ const roundWinChecker = () => {
                 document.querySelector("#game-board").style.pointerEvents = "none";
                 roundCount = roundCount + 1;
                 
-                handleScoreboardUpdate();
-                alert(`${roundWinner} Wins the round!`);
+                setTimeout(handleScoreboardUpdate, 1500);
                 setTimeout(handleReset, 1500);
-                winChecker();
+                setTimeout(winChecker, 3500);
         };
     });
 };
