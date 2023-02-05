@@ -8,7 +8,7 @@ let roundCount = 0;
 
 wincon = [['0', '1', '2'], ['3', '4', '5'], ['6', '7', '8'], ['0', '3', '6'], ['1', '4', '7'], ['2', '5', '8'], ['0', '4', '8'], ['2', '4', '6']];
 
-const gameStartElements = document.querySelector(".page-elements")
+const gameStartElements = document.querySelector(".page-elements");
 const crosses = document.getElementsByClassName("cross");
 const circles = document.getElementsByClassName("circle");
 const startBtn = document.getElementById("start-button");
@@ -211,7 +211,7 @@ const roundWinChecker = () => {
                 setTimeout(handleScoreboardUpdate, 1500);
                 setTimeout(handleReset, 1500);
                 setTimeout(winChecker, 3500);
-        };
+        }
     });
 };
 
