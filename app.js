@@ -8,10 +8,10 @@ let roundCount = 0;
 
 wincon = [['0', '1', '2'], ['3', '4', '5'], ['6', '7', '8'], ['0', '3', '6'], ['1', '4', '7'], ['2', '5', '8'], ['0', '4', '8'], ['2', '4', '6']];
 
-const gameStartElements = document.querySelector(".page-elements")
+const gameStartElements = document.querySelector(".page-elements");
 const crosses = document.getElementsByClassName("cross");
 const circles = document.getElementsByClassName("circle");
-const startBtn = document.getElementById("start-button")
+const startBtn = document.getElementById("start-button");
 const leaderboard = document.querySelector(".leaderboard");
 const inputBox = document.querySelector(".input-box");
 let player1Input = document.querySelector(".input-1");
@@ -25,7 +25,7 @@ const nextMatch = document.getElementById("play-again");
 const gridBox = document.getElementById("grid-box");
 const nameWarn = document.getElementById("name-warn");
 const currentRound = document.getElementById("current-round");
-const leaderboardClear = document.getElementById("clear-board")
+const leaderboardClear = document.getElementById("clear-board");
 let player1Name;
 let player2Name;
 let currentPlayer;
@@ -34,32 +34,31 @@ let matchWinner;
 let numOfCells;
 
 const swapPlayers = () => {
-    firstPlayerTurn ? currentPlayer = player1Input.value : currentPlayer = player2Input.value;
-    nameDisplay.textContent = `It's ${currentPlayer}'s turn!`
+    currentPlayer = firstPlayerTurn ? player1Input.value : player2Input.value;
+    nameDisplay.textContent = `It's ${currentPlayer}'s turn!`;
 }; 
 
 const generateCells = () => {
     for (let i = 0; i < 9; i++){
         const createCell = document.createElement("div");
         gridBox.appendChild(createCell);
-        createCell.className = "table-cell"
+        createCell.className = "table-cell";
         createCell.id = `cell${i}`;
     };
 };
 
 const handleDraws = () => {
-    if(firstPlayerPoints.length + secondPlayerPoints.length == 9){
+    if (firstPlayerPoints.length + secondPlayerPoints.length == 9) {
 
-        if(firstPlayerRoundWins > 0 || secondPlayerRoundWins > 0){
-            alert("It's a draw, nice try!")
+        if (firstPlayerRoundWins > 0 || secondPlayerRoundWins > 0) {
+            alert("It's a draw, nice try!");
             document.querySelector("#game-board").style.pointerEvents = "none";
-        };
+        }
 
-    };
+    }
 };
 
 const handleReset = () => {
-    
     firstPlayerPoints = [];
     secondPlayerPoints = [];
     gridBox.innerHTML = "";
@@ -67,9 +66,8 @@ const handleReset = () => {
 
     handleTurnChange();
     enableGameBoard();
-
     document.querySelector("#game-board").style.pointerEvents = "all";
-}
+};
 
 const clearScreen = () => {
     gameStartElements.classList.add("hidden");
@@ -77,14 +75,12 @@ const clearScreen = () => {
 };
 
 const startButtonEnabler = () => {
-
-    if(player1Input.value == "" || player2Input.value == "") {
+    if (player1Input.value == "" || player2Input.value == "") {
         startBtn.disabled = true;
-    } else if(player1Input.value == player2Input.value) {
+    } else if (player1Input.value == player2Input.value) {
         startBtn.disabled = true;
         nameWarn.classList.remove("hidden");
-    }
-     else {
+    } else {
         nameWarn.classList.add("hidden");
         startBtn.disabled = false;
         startBtn.addEventListener("click", () => {
@@ -95,7 +91,6 @@ const startButtonEnabler = () => {
             gameStartElements.classList.remove("hidden");
             inputBox.classList.add("hidden");
             handleScoreboardUpdate();
-
     });
 }}; 
 
@@ -150,18 +145,21 @@ const appendSymbol = (icon, event) => {
 
 
 const handleScoreboardUpdate = () =>  {
+    if (roundWinner !== undefined || "") {
+        alert(`${roundWinner} Wins the round!`);
+        document.querySelector("#game-board").style.pointerEvents = "none";
+    }
+
     player1Score.textContent = `${player1Name}'s round wins : ${firstPlayerRoundWins}`;
     player2Score.textContent = `${player2Name}'s round wins : ${secondPlayerRoundWins}`; 
     currentRound.textContent = `It's currently round ${roundCount}, win 3 rounds to win the match!`;
 };
 
 const winChecker = () => {
-
     if (firstPlayerRoundWins == 3) {
-        matchWinner = player1Input.value
-    }
-    else if (secondPlayerRoundWins == 3) {
-        matchWinner = player2Input.value
+        matchWinner = player1Input.value;
+    } else if (secondPlayerRoundWins == 3) {
+        matchWinner = player2Input.value;
     }
 
     if (secondPlayerRoundWins == 3 || firstPlayerRoundWins == 3) {
@@ -173,7 +171,6 @@ const winChecker = () => {
                 handleReset();
                 firstPlayerRoundWins = 0;
                 secondPlayerRoundWins = 0;
-
                 roundCount = 0;
 
                 player1Input.textContent = "";
@@ -196,14 +193,13 @@ const winChecker = () => {
 
 const roundWinChecker = () => {
     wincon.forEach(condition => {
-        player1win = condition.every(con => firstPlayerPoints.includes(con))
-        player2win = condition.every(con => secondPlayerPoints.includes(con))
+        player1win = condition.every(con => firstPlayerPoints.includes(con));
+        player2win = condition.every(con => secondPlayerPoints.includes(con));
 
             if (player1win) {
                 roundWinner = player1Name;
                 firstPlayerRoundWins = firstPlayerRoundWins + 1;
-            }
-            else if (player2win) {
+            } else if (player2win) {
                 roundWinner = player2Name;
                 secondPlayerRoundWins = secondPlayerRoundWins + 1;
             }
@@ -212,11 +208,10 @@ const roundWinChecker = () => {
                 document.querySelector("#game-board").style.pointerEvents = "none";
                 roundCount = roundCount + 1;
                 
-                handleScoreboardUpdate();
-                alert(`${roundWinner} Wins the round!`);
+                setTimeout(handleScoreboardUpdate, 1500);
                 setTimeout(handleReset, 1500);
-                winChecker();
-        };
+                setTimeout(winChecker, 3500);
+        }
     });
 };
 
