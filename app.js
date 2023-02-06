@@ -48,9 +48,9 @@ const generateCells = () => {
 };
 
 const handleDraws = () => {
-    if (firstPlayerPoints.length + secondPlayerPoints.length == 9)  {
+    if (firstPlayerPoints.length + secondPlayerPoints.length == 9) {
 
-        if (firstPlayerRoundWins > 0 || secondPlayerRoundWins > 0)  {
+        if (firstPlayerRoundWins > 0 || secondPlayerRoundWins > 0) {
             alert("It's a draw, nice try!");
             document.querySelector("#game-board").style.pointerEvents = "none";
         }
