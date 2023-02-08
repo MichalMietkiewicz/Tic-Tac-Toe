@@ -47,14 +47,21 @@ const generateCells = () => {
     };
 };
 
-const handleDraws = () => {
-    if (firstPlayerPoints.length + secondPlayerPoints.length == 9) {
+const isGameBoardFull = firstPlayerPoints.length + secondPlayerPoints.length == 9;
+const areWinnedRoundsExists = firstPlayerRoundWins > 0 || secondPlayerRoundWins > 0;
 
+const handleDraws = () => {
+    // console.log(isGameBoardFull);
+    // console.log(areWinnedRoundsExists);
+    // if (isGameBoardFull && areWinnedRoundsExists) {
+    //     alert("It's a draw, nice try!");
+    //     document.querySelector("#game-board").style.pointerEvents = "none";
+    // }
+    if (firstPlayerPoints.length + secondPlayerPoints.length == 9) {
         if (firstPlayerRoundWins > 0 || secondPlayerRoundWins > 0) {
             alert("It's a draw, nice try!");
             document.querySelector("#game-board").style.pointerEvents = "none";
         }
-
     }
 };
 
@@ -84,15 +91,15 @@ const startButtonEnabler = () => {
         nameWarn.classList.add("hidden");
         startBtn.disabled = false;
         startBtn.addEventListener("click", () => {
-
             player1Name = player1Input.value;
-            player2Name = player2Input.value;    
+            player2Name = player2Input.value;   
 
             gameStartElements.classList.remove("hidden");
             inputBox.classList.add("hidden");
             handleScoreboardUpdate();
-    });
-}}; 
+        });
+    }
+}; 
 
 const enableGameBoard = () => {
     generateCells();
@@ -102,10 +109,7 @@ const enableGameBoard = () => {
     }));
 };
 
-resetButton.addEventListener("click", () => {
-    handleReset();
-});
-
+resetButton.addEventListener("click", () => {handleReset();});
 
 startBtn.addEventListener("click", () => {
     startButtonEnabler();
@@ -135,14 +139,11 @@ const appendSymbol = (icon, event) => {
     
     event.target.appendChild(symbol);
     symbol.style.pointerEvents = "none";
-
     handleTurnChange();
     winChecker();
     handleDraws();
     roundWinChecker();
 };
-
-
 
 const handleScoreboardUpdate = () =>  {
     if (roundWinner !== undefined || "") {
@@ -167,21 +168,21 @@ const winChecker = () => {
         resetButton.classList.add("hidden");
         nextMatch.classList.remove("hidden");
 
-            nextMatch.addEventListener("click", () => {
-                handleReset();
-                firstPlayerRoundWins = 0;
-                secondPlayerRoundWins = 0;
-                roundCount = 0;
+        nextMatch.addEventListener("click", () => {
+            handleReset();
+            firstPlayerRoundWins = 0;
+            secondPlayerRoundWins = 0;
+            roundCount = 0;
 
-                player1Input.textContent = "";
-                player2Input.textContent = "";
-                clearScreen();
+            player1Input.textContent = "";
+            player2Input.textContent = "";
+            clearScreen();
 
-                gridBox.innerHTML = "";
-                nameDisplay.innerHTML = `Its first player's turn`;
-                resetButton.classList.remove("hidden");
-                nextMatch.classList.add("hidden");
-    });
+            gridBox.innerHTML = "";
+            nameDisplay.innerHTML = `Its first player's turn`;
+            resetButton.classList.remove("hidden");
+            nextMatch.classList.add("hidden");
+        });
         
         alert(`${matchWinner} WINS THE GAME CONGRATULATIONS! 😊`);
 
@@ -189,7 +190,8 @@ const winChecker = () => {
         let leaderboardPlayer = document.createElement('li');
         leaderboardPlayer.appendChild(document.createTextNode(`${matchWinner}`));
         document.querySelector('ul').appendChild(leaderboardPlayer);
-}};
+    }
+};
 
 const roundWinChecker = () => {
     wincon.forEach(condition => {
@@ -207,7 +209,6 @@ const roundWinChecker = () => {
             if (player1win || player2win) {
                 document.querySelector("#game-board").style.pointerEvents = "none";
                 roundCount = roundCount + 1;
-                
                 setTimeout(handleScoreboardUpdate, 1500);
                 setTimeout(handleReset, 1500);
                 setTimeout(winChecker, 3500);
