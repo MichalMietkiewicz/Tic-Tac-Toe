@@ -26,6 +26,8 @@ const gridBox = document.getElementById("grid-box");
 const nameWarn = document.getElementById("name-warn");
 const currentRound = document.getElementById("current-round");
 const leaderboardClear = document.getElementById("clear-board");
+let player1win;
+let player2win;
 let player1Name;
 let player2Name;
 let currentPlayer;
@@ -47,6 +49,17 @@ const generateCells = () => {
     };
 };
 
+const handleReset = () => {
+    firstPlayerPoints = [];
+    secondPlayerPoints = [];
+    gridBox.innerHTML = "";
+    roundWinner = "";
+
+    handleTurnChange();
+    enableGameBoard();
+    document.querySelector("#game-board").style.pointerEvents = "all";
+};
+
 const isGameBoardFull = firstPlayerPoints.length + secondPlayerPoints.length == 9;
 const areWinnedRoundsExists = firstPlayerRoundWins > 0 || secondPlayerRoundWins > 0;
 
@@ -58,22 +71,13 @@ const handleDraws = () => {
     //     document.querySelector("#game-board").style.pointerEvents = "none";
     // }
     if (firstPlayerPoints.length + secondPlayerPoints.length == 9) {
-        if (firstPlayerRoundWins > 0 || secondPlayerRoundWins > 0) {
+        if (player1win == false && player2win == false) {
             alert("It's a draw, nice try!");
             document.querySelector("#game-board").style.pointerEvents = "none";
+            roundCount = roundCount + 1;
+            handleReset();
         }
     }
-};
-
-const handleReset = () => {
-    firstPlayerPoints = [];
-    secondPlayerPoints = [];
-    gridBox.innerHTML = "";
-    roundWinner = "";
-
-    handleTurnChange();
-    enableGameBoard();
-    document.querySelector("#game-board").style.pointerEvents = "all";
 };
 
 const clearScreen = () => {
@@ -141,8 +145,8 @@ const appendSymbol = (icon, event) => {
     symbol.style.pointerEvents = "none";
     handleTurnChange();
     winChecker();
-    handleDraws();
     roundWinChecker();
+    setTimeout(handleDraws, 3501);
 };
 
 const handleScoreboardUpdate = () =>  {
@@ -211,7 +215,7 @@ const roundWinChecker = () => {
                 roundCount = roundCount + 1;
                 setTimeout(handleScoreboardUpdate, 1500);
                 setTimeout(handleReset, 1500);
-                setTimeout(winChecker, 3500);
+                setTimeout(winChecker, 2000);
         }
     });
 };
